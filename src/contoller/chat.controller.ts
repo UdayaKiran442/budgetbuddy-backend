@@ -1,6 +1,6 @@
 import { createEmbedding, generateChatResponseFromOpenAI } from "../services/openai/openai.service";
 import { queryPinecone } from "../services/pinecone/pinecone.service";
-import { createChatInDb, getChatMessagesFromDb } from "../repository/chat/chat.repository";
+import { createChatInDb, getChatMessagesFromDb, insertChatMessagesInDb } from "../repository/chat/chat.repository";
 import { CREATE_CHAT_ERROR, GENERATE_CHAT_RESPONSE_ERROR, GET_CHAT_MESSAGES_ERROR } from "../constants/error.constants";
 import { CreateChatError, CreateChatErrorInDb, GetChatMessagesError, GetChatMessagesFromDbError } from "../exceptions/chat.exceptions";
 import { GenerateChatResponseError, GenerateChatResponseFromOpenAIError } from "../exceptions/openai.exceptions";
@@ -19,6 +19,11 @@ export async function generateChatResponse(payload: IGenerateChatResponseSchema)
         const response = await generateChatResponseFromOpenAI({
             context,
             prompt: payload.prompt
+        })
+        await insertChatMessagesInDb({
+            chatId: payload.chatId,
+            prompt: payload.prompt,
+            response: response.response
         })
         return response;
     } catch (error) {
