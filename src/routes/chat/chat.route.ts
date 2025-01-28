@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { z } from "zod";
 
-import { createChat, generateChatResponse } from "../../contoller/chat.controller";
-import { CreateChatError, CreateChatErrorInDb } from "../../exceptions/chat.exceptions";
+import { createChat, generateChatResponse, getChatMessages } from "../../contoller/chat.controller";
+import { CreateChatError, CreateChatErrorInDb, GetChatMessagesError, GetChatMessagesFromDbError } from "../../exceptions/chat.exceptions";
 import {
   GenerateChatResponseError,
   GenerateChatResponseFromOpenAIError,
@@ -52,5 +52,17 @@ chatRouter.get("/create", async (c) => {
     }
  }
 });
+
+chatRouter.post("/messages", async (c) => {
+  try {
+    const payload = await c.req.json();
+    const response = await getChatMessages(payload.chatId);
+    return c.json(response);
+  } catch (error) {
+    if(error instanceof GetChatMessagesError || error instanceof GetChatMessagesFromDbError){
+      return c.json(error.toObject());
+    }
+  }
+})
 
 export default chatRouter;

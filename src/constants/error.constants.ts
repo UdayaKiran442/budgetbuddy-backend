@@ -11,3 +11,5 @@ export const CREATE_CHAT_ERROR = { message: 'Error creating chat', errorCode: 'C
 export const INSERT_CHAT_MESSAGES_IN_DB_ERROR = { message: 'Error inserting chat messages in db', errorCode: 'CHAT_102', statusCode: 500 };
 export const GENERATE_CHAT_RESPONSE_ERROR = { message: 'Error generating chat response', errorCode: 'CHAT_103', statusCode: 500 };
 export const CREATE_CHAT_IN_DB_ERROR = { message: 'Error creating chat in db', errorCode: 'CHAT_104', statusCode: 500 };
+export const GET_CHAT_MESSAGES_FROM_DB_ERROR = { message: 'Error getting chat messages from db', errorCode: 'CHAT_105', statusCode: 500 };
+export const GET_CHAT_MESSAGES_ERROR = { message: 'Error getting chat messages', errorCode: 'CHAT_106', statusCode: 500 };

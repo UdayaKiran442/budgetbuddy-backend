@@ -1,10 +1,10 @@
-import { CREATE_CHAT_ERROR, GENERATE_CHAT_RESPONSE_ERROR } from "../constants/error.constants";
-import { CreateChatError, CreateChatErrorInDb } from "../exceptions/chat.exceptions";
-import { GenerateChatResponseError, GenerateChatResponseFromOpenAIError } from "../exceptions/openai.exceptions";
-import { createChatInDb } from "../repository/chat/chat.repository";
-import { IGenerateChatResponseSchema } from "../routes/chat/chat.route";
 import { createEmbedding, generateChatResponseFromOpenAI } from "../services/openai/openai.service";
 import { queryPinecone } from "../services/pinecone/pinecone.service";
+import { createChatInDb, getChatMessagesFromDb } from "../repository/chat/chat.repository";
+import { CREATE_CHAT_ERROR, GENERATE_CHAT_RESPONSE_ERROR, GET_CHAT_MESSAGES_ERROR } from "../constants/error.constants";
+import { CreateChatError, CreateChatErrorInDb, GetChatMessagesError, GetChatMessagesFromDbError } from "../exceptions/chat.exceptions";
+import { GenerateChatResponseError, GenerateChatResponseFromOpenAIError } from "../exceptions/openai.exceptions";
+import { IGenerateChatResponseSchema } from "../routes/chat/chat.route";
 
 export async function generateChatResponse(payload: IGenerateChatResponseSchema) {
     try {
@@ -12,17 +12,14 @@ export async function generateChatResponse(payload: IGenerateChatResponseSchema)
         const queryResponse = await queryPinecone({
             promptVector: embeddings.data[0].embedding,
         })
-        console.log("🚀 ~ generateChatResponse ~ queryResponse:", queryResponse)
         let context = '';
         for (const item of queryResponse.matches) {
             context += item.metadata.text;
         }
-        console.log("🚀 ~ generateChatResponse ~ context:", context)
         const response = await generateChatResponseFromOpenAI({
             context,
             prompt: payload.prompt
         })
-        console.log("🚀 ~ generateChatResponse ~ response:", response)
         return response;
     } catch (error) {
         if(error instanceof GenerateChatResponseFromOpenAIError){
@@ -48,5 +45,20 @@ export async function createChat() {
             CREATE_CHAT_ERROR.errorCode,
             CREATE_CHAT_ERROR.statusCode
         )
+    }
+}
+
+export async function getChatMessages(chatId: string){
+    try {
+        return await getChatMessagesFromDb(chatId);
+    } catch (error) {
+        if(error instanceof GetChatMessagesFromDbError){
+            throw error
+        }
+       throw new GetChatMessagesError(
+        GET_CHAT_MESSAGES_ERROR.message,
+        GET_CHAT_MESSAGES_ERROR.errorCode,
+        GET_CHAT_MESSAGES_ERROR.statusCode
+       )    
     }
 }
