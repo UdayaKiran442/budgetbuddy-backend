@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 
 import testRouter from './routes/test/test.route'
+import chatRouter from './routes/chat/chat.route'
 
 const app = new Hono()
 
@@ -9,6 +10,7 @@ app.get('/', (c) => {
 })
 
 app.route('/test', testRouter)
+app.route('/chat', chatRouter)
 
 Bun.serve({
     port: 3000,

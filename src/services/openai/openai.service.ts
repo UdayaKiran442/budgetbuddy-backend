@@ -2,11 +2,11 @@ import OpenAI from "openai";
 
 import {
   CreateEmbeddingError,
-  GenerateChatResponseError,
+  GenerateChatResponseFromOpenAIError,
 } from "../../exceptions/openai.exceptions";
 import {
   CREATE_EMBEDDING_ERROR,
-  GENERATE_CHAT_RESPONSE_ERROR,
+  GENERATE_CHAT_RESPONSE_FROM_OPENAI_ERROR,
 } from "../../constants/error.constants";
 
 const openai = new OpenAI({
@@ -30,7 +30,7 @@ export async function createEmbedding(text: string) {
   }
 }
 
-export async function generateChatResponse(payload: {
+export async function generateChatResponseFromOpenAI(payload: {
   prompt: string;
   context: string;
 }) {
@@ -47,15 +47,12 @@ export async function generateChatResponse(payload: {
         type: "json_object",
       },
     });
-    console.log("🚀 ~ response:", response);
-    const responseJSON = JSON.parse(response.choices[0].message.content);
-    console.log("🚀 ~ responseJSON:", responseJSON);
-    return responseJSON;
+    return JSON.parse(response.choices[0].message.content);
   } catch (error) {
-    throw new GenerateChatResponseError(
-      GENERATE_CHAT_RESPONSE_ERROR.message,
-      GENERATE_CHAT_RESPONSE_ERROR.errorCode,
-      GENERATE_CHAT_RESPONSE_ERROR.statusCode
+    throw new GenerateChatResponseFromOpenAIError(
+      GENERATE_CHAT_RESPONSE_FROM_OPENAI_ERROR.message,
+      GENERATE_CHAT_RESPONSE_FROM_OPENAI_ERROR.errorCode,
+      GENERATE_CHAT_RESPONSE_FROM_OPENAI_ERROR.statusCode
     );
   }
 }
