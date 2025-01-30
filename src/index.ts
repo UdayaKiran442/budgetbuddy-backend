@@ -1,9 +1,13 @@
 import { Hono } from 'hono'
-
+import { cors } from 'hono/cors'
 import testRouter from './routes/test/test.route'
 import chatRouter from './routes/chat/chat.route'
 
 const app = new Hono()
+
+app.use("/*", cors({
+  origin: ["http://localhost:5173",]
+}))
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
