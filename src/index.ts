@@ -6,7 +6,7 @@ import chatRouter from './routes/chat/chat.route'
 const app = new Hono()
 
 app.use("/*", cors({
-  origin: ["http://localhost:5173",]
+  origin: ["http://localhost:5173","https://budgetbuddy-xi.vercel.app"]
 }))
 
 app.get('/', (c) => {
