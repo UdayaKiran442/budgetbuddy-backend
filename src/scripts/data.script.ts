@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import {CheerioWebBaseLoader} from '@langchain/community/document_loaders/web/cheerio'
 
 import { createEmbedding } from "../services/openai/openai.service";
 import { insertVectorDataToPinecone } from "../services/pinecone/pinecone.service";
@@ -32,6 +33,22 @@ export async function dataScript(filePath: string) {
             pageCount++;
         }
         return true;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export async function scrapeData(url: string) {
+    try {
+        const loader = new CheerioWebBaseLoader(url);
+        const docs = await loader.load();
+        const splitter = new RecursiveCharacterTextSplitter({
+            chunkSize: 1000,
+            chunkOverlap: 200,
+        });
+        const chunks = await splitter.splitDocuments(docs);
+        return chunks;
     } catch (error) {
         console.error(error);
         throw error;
