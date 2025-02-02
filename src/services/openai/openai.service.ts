@@ -40,9 +40,10 @@ export async function generateChatResponseFromOpenAI(payload: {
       messages: [
         {
           role: "system",
-          content: `Provide a response to the user's prompt based on the context provided. Context is the user's resume. Prompt: ${payload.prompt} Context: ${payload.context}. Response: Without any explanation, provide a RFC8259 compliant JSON response following this format without deviation. {"response": ""}. Do not include any other text or explanation.`,
+          content: `Provide a **detailed response** to the user's prompt based on the context provided. Context is the detailed financial budget of Bharat. Also provide a response if the user's prompt is not related to the context. Prompt: ${payload.prompt} Context: ${payload.context}. Response: Without any explanation, provide a RFC8259 compliant JSON response following this format without deviation. {"response": ""}. Do not include any other text or explanation.`,
         },
       ],
+      temperature: 0,
       response_format: {
         type: "json_object",
       },

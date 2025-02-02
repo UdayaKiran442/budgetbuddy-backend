@@ -5,6 +5,7 @@ import { CREATE_CHAT_ERROR, GENERATE_CHAT_RESPONSE_ERROR, GET_CHAT_MESSAGES_ERRO
 import { CreateChatError, CreateChatErrorInDb, GetChatMessagesError, GetChatMessagesFromDbError } from "../exceptions/chat.exceptions";
 import { GenerateChatResponseError, GenerateChatResponseFromOpenAIError } from "../exceptions/openai.exceptions";
 import { IGenerateChatResponseSchema } from "../routes/chat/chat.route";
+import { cleanExtractedText } from "../utils/cleanText.utils";
 
 export async function generateChatResponse(payload: IGenerateChatResponseSchema) {
     try {
@@ -16,6 +17,7 @@ export async function generateChatResponse(payload: IGenerateChatResponseSchema)
         for (const item of queryResponse.matches) {
             context += item.metadata.text;
         }
+        context = cleanExtractedText(context);
         const response = await generateChatResponseFromOpenAI({
             context,
             prompt: payload.prompt
