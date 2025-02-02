@@ -7,7 +7,7 @@ const pc = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY,
 });
 
-const indexName = "resume-rag";
+const indexName = "budget-rag";
 
 export async function insertVectorDataToPinecone(payload: {
   responseVector: number[];
