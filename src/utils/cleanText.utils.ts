@@ -1,3 +1,4 @@
+// Clean the extracted text
 export function cleanExtractedText(text: string) {
     return text
         // Remove encoding artifacts and special characters

@@ -12,6 +12,7 @@ const splitter = new RecursiveCharacterTextSplitter({
   chunkOverlap: 200,
 });
 
+// Script to ingest data from a PDF file into the vector database
 export async function scrapeDataFromPdfScript(filePath: string) {
   try {
     // extract the text from the pdf
@@ -37,6 +38,7 @@ export async function scrapeDataFromPdfScript(filePath: string) {
   }
 }
 
+// Script to ingest data from a URL into the vector database
 export async function scrapeDataFromUrlScript(url: string) {
   try {
     const loader = new CheerioWebBaseLoader(url);
@@ -59,6 +61,7 @@ export async function scrapeDataFromUrlScript(url: string) {
   }
 }
 
+// Script to ingest data from a PPTX file into the vector database
 export async function scrapeDataFromPptxScript(filePath: string) {
   try {
     const loader = new PPTXLoader(filePath);

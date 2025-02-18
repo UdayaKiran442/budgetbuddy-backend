@@ -1,3 +1,5 @@
+
+// Create embedding error
 export class CreateEmbeddingError extends Error {
     statusCode: number;
     errorCode: string;
@@ -15,6 +17,7 @@ export class CreateEmbeddingError extends Error {
     }
 }
 
+// Generate chat response error
 export class GenerateChatResponseError extends Error {
     statusCode: number;
     errorCode: string;
@@ -32,6 +35,7 @@ export class GenerateChatResponseError extends Error {
     }
 }
 
+// Generate chat response from OpenAI error
 export class GenerateChatResponseFromOpenAIError extends Error {
     statusCode: number;
     errorCode: string;

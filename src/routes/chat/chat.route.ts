@@ -10,15 +10,18 @@ import {
 
 const chatRouter = new Hono();
 
+// Generate chat response schema
 const GenerateChatResponseSchema = z.object({
   chatId: z.string().describe("The chat id"),
   prompt: z.string().describe("The prompt to generate a chat response"),
 });
 
+// Generate chat response schema type
 export type IGenerateChatResponseSchema = z.infer<
   typeof GenerateChatResponseSchema
 >;
 
+// Generate chat response route
 chatRouter.post("/generate", async (c) => {
   try {
     const payload = await c.req.json();
@@ -38,6 +41,7 @@ chatRouter.post("/generate", async (c) => {
   }
 });
 
+// Create a new chat route
 chatRouter.get("/create", async (c) => {
  try {
      const response = await createChat();
@@ -53,6 +57,7 @@ chatRouter.get("/create", async (c) => {
  }
 });
 
+// Get chat messages route
 chatRouter.post("/messages", async (c) => {
   try {
     const payload = await c.req.json();
@@ -65,4 +70,5 @@ chatRouter.post("/messages", async (c) => {
   }
 })
 
+// Export the chat router
 export default chatRouter;

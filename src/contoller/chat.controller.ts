@@ -9,24 +9,31 @@ import { cleanExtractedText } from "../utils/cleanText.utils";
 
 export async function generateChatResponse(payload: IGenerateChatResponseSchema) {
     try {
+        // Create embeddings for the prompt
         const embeddings = await createEmbedding(payload.prompt);
+        // Query Pinecone for relevant responses
         const queryResponse = await queryPinecone({
             promptVector: embeddings.data[0].embedding,
         })
+        // Extract context from the query response
         let context = '';
         for (const item of queryResponse.matches) {
             context += item.metadata.text;
         }
+        // Util function  to clean the extracted text
         context = cleanExtractedText(context);
+        // Generate chat response from OpenAI
         const response = await generateChatResponseFromOpenAI({
             context,
             prompt: payload.prompt
         })
+        // Insert chat messages in the database
         await insertChatMessagesInDb({
             chatId: payload.chatId,
             prompt: payload.prompt,
             response: response.response
         })
+        // Return the response
         return response;
     } catch (error) {
         if(error instanceof GenerateChatResponseFromOpenAIError){
@@ -40,6 +47,7 @@ export async function generateChatResponse(payload: IGenerateChatResponseSchema)
     }
 }
 
+// Create a new chat
 export async function createChat() {
     try {
         return await createChatInDb();
@@ -55,6 +63,7 @@ export async function createChat() {
     }
 }
 
+// Get chat messages from the database
 export async function getChatMessages(chatId: string){
     try {
         return await getChatMessagesFromDb(chatId);

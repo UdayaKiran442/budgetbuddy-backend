@@ -7,6 +7,7 @@ import {
 
 const testRouter = new Hono();
 
+// Data to be ingested into the vector database
 const data = [
   {
     url: "https://pib.gov.in/PressReleasePage.aspx?PRID=2097921",
@@ -46,6 +47,7 @@ const data = [
   },
 ];
 
+// Script to ingest data into the vector database
 testRouter.get("/", async (c) => {
   try {
     for (const item of data) {

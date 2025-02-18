@@ -1,3 +1,5 @@
+
+// Insert vector to Pinecone error
 export class InsertVectorToPineconeError extends Error {
     statusCode: number;
     errorCode: string;
@@ -15,6 +17,7 @@ export class InsertVectorToPineconeError extends Error {
     }
 }
 
+// Fetch relevant response from Pinecone error
 export class FetchRelevantResponseFromPineconeError extends Error {
     statusCode: number;
     errorCode: string;

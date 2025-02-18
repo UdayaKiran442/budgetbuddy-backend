@@ -1,3 +1,4 @@
+// Create chat error
 export class CreateChatError extends Error {
     statusCode: number;
     errorCode: string;
@@ -15,6 +16,7 @@ export class CreateChatError extends Error {
     }
 }
 
+// Insert chat messages in db error
 export class InsertChatMessagesInDbError extends Error {
     statusCode: number;
     errorCode: string;
@@ -32,6 +34,7 @@ export class InsertChatMessagesInDbError extends Error {
     }
 }
 
+// Create chat error in db
 export class CreateChatErrorInDb extends Error {
     statusCode: number;
     errorCode: string;
@@ -49,6 +52,7 @@ export class CreateChatErrorInDb extends Error {
     }
 }
 
+// Get chat messages from db error
 export class GetChatMessagesFromDbError extends Error {
     statusCode: number;
     errorCode: string;
@@ -66,6 +70,7 @@ export class GetChatMessagesFromDbError extends Error {
     }
 }
 
+// Get chat messages error
 export class GetChatMessagesError extends Error {
     statusCode: number;
     errorCode: string;
